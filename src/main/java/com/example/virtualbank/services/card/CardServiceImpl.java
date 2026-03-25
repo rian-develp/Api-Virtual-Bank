@@ -45,7 +45,7 @@ public class CardServiceImpl implements CardService{
     public GetInfoCardDTO getInfoCard(String cardNumber) {
         var result = cardRepository.getInfoAboutCardAndCustomer(cardNumber);
         if (result == null) {
-            throw new RuntimeException("Erro");
+            throw new EntityNotFoundException("Card not found");
         }
         return new GetInfoCardDTO(result.getCardNumber(), result.getValidity(), result.getBankName(), result.getCustomerName());
     }
