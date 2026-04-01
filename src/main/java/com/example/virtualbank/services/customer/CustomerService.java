@@ -8,5 +8,6 @@ public interface CustomerService {
 
     Customer doLogin(FindCustomerByEmailAndPasswordDTO dto);
     Customer doSignUp(CreateCustomerDTO dto);
+    Customer findByEmail(String email);
     Boolean existsByEmail(String email);
 }
