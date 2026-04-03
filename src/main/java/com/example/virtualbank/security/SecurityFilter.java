@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if (login != null) {
-            CustomerEntity customer = customerRepository.findByCustomerEmail();
+            CustomerEntity customer = customerRepository.findByEmail(login);
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(customer, null, authorities);
         }
