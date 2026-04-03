@@ -1,6 +1,5 @@
 package com.example.virtualbank.security;
 
-import com.example.virtualbank.dtos.card.FindCustomerByEmailAndPasswordDTO;
 import com.example.virtualbank.mappers.CustomerMapper;
 import com.example.virtualbank.model.Customer;
 import com.example.virtualbank.repositories.CustomerRepository;
@@ -28,6 +27,6 @@ public class CustomCustomerDetailsService implements UserDetailsService {
         if (customer == null){
             throw new UsernameNotFoundException("Customer not found");
         }
-        return new org.springframework.security.core.userdetails.User(dto.email(), dto.password(), new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
     }
 }
