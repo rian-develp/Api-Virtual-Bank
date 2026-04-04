@@ -8,10 +8,12 @@ import com.example.virtualbank.exceptions.EntityNotFoundException;
 import com.example.virtualbank.repositories.CustomerRepository;
 import com.example.virtualbank.security.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final CustomerRepository repository;
