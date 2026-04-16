@@ -1,6 +1,6 @@
 package com.example.virtualbank.auth.request;
 
-public record AuthRequestDTO(
+public record AuthRequestSignUpDTO(
         String name,
         String birthdate,
         String phone_number,

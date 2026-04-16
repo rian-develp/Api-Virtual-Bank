@@ -1,6 +1,7 @@
 package com.example.virtualbank.services.auth;
 
-import com.example.virtualbank.auth.request.AuthRequestDTO;
+import com.example.virtualbank.auth.request.AuthRequestLoginDTO;
+import com.example.virtualbank.auth.request.AuthRequestSignUpDTO;
 import com.example.virtualbank.auth.response.AuthResponseDTO;
 import com.example.virtualbank.entities.CustomerEntity;
 import com.example.virtualbank.exceptions.EntityAlreadyExistsException;
@@ -27,17 +28,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String login(AuthRequestDTO dto) {
+    public String login(AuthRequestLoginDTO dto) {
         CustomerEntity customerEntity = repository.findByEmail(dto.email());
 
         if (customerEntity == null || !encoder.matches(dto.password(), customerEntity.getPassword())) {
             throw new EntityNotFoundException("Customer not found");
         }
-        return tokenService.generateToken(customerEntity);
+        String token = tokenService.generateToken(customerEntity);
+        return token;
     }
 
     @Override
-    public AuthResponseDTO signup(AuthRequestDTO dto) {
+    public AuthResponseDTO signup(AuthRequestSignUpDTO dto) {
 
         CustomerEntity customerEntity = repository.findByEmail(dto.email());
 
