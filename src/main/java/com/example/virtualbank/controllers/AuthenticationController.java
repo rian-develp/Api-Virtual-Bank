@@ -1,6 +1,7 @@
 package com.example.virtualbank.controllers;
 
 
+import com.example.virtualbank.auth.request.AuthRequestLoginDTO;
 import com.example.virtualbank.auth.request.AuthRequestSignUpDTO;
 import com.example.virtualbank.auth.response.AuthResponseDTO;
 import com.example.virtualbank.repositories.CustomerRepository;
@@ -29,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseBody<String>> login(@RequestBody AuthRequestSignUpDTO dto){
+    public ResponseEntity<ResponseBody<String>> login(@RequestBody AuthRequestLoginDTO dto){
         var response = service.login(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ResponseBody<>(HttpStatus.CREATED.value(), response)
