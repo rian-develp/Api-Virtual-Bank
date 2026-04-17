@@ -22,11 +22,10 @@ public class CustomCustomerDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Customer customer = CustomerMapper.toCustomer(repository.findByEmail(username));
+        Customer customer = repository.findByEmail(username)
+                .map(CustomerMapper::toCustomer)
+                .orElseThrow(() -> new UsernameNotFoundException("Customer not found"));
 
-        if (customer == null){
-            throw new UsernameNotFoundException("Customer not found");
-        }
         return new org.springframework.security.core.userdetails.User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
     }
 }
