@@ -26,7 +26,8 @@ public class CustomerServiceImpl implements CustomerService{
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
     }
 
-    public List<Customer> findAllCustomers(){
+    @Override
+    public List<Customer> findAllCustomers() {
         return repository.findAll()
                 .stream()
                 .map(CustomerMapper::toCustomer)
