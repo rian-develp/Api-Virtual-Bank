@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -29,23 +30,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String login(AuthRequestLoginDTO dto) {
-        CustomerEntity customerEntity = repository.findByEmail(dto.email());
-
-        if (customerEntity == null || !encoder.matches(dto.password(), customerEntity.getPassword())) {
-            throw new EntityNotFoundException("Customer not found");
-        }
-        String token = tokenService.generateToken(customerEntity);
-        return token;
+        return repository.findByEmail(dto.email())
+                .filter(c -> encoder.matches(dto.password(), c.getPassword()))
+                .map(tokenService::generateToken)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
     }
 
     @Override
     public AuthResponseDTO signup(AuthRequestSignUpDTO dto) {
 
-        CustomerEntity customerEntity = repository.findByEmail(dto.email());
+        repository.findByEmail(dto.email())
+                .ifPresent(customer -> new EntityAlreadyExistsException("Customer already exists"));
 
-        if (customerEntity != null) {
-            throw new EntityAlreadyExistsException("Customer already exists");
-        }
 
         CustomerEntity entity = new CustomerEntity(
                 dto.name(),
