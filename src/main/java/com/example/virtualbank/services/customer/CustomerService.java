@@ -5,5 +5,4 @@ import com.example.virtualbank.model.Customer;
 public interface CustomerService {
 
     Customer findByEmail(String email);
-    Boolean existsByEmail(String email);
 }
