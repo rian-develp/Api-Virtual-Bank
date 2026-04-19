@@ -22,12 +22,9 @@ public class CustomerController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<ResponseBody<Customer>> findByEmail(@RequestBody FindByEmailDTO dto){
+    public ResponseEntity<Customer> findByEmail(@RequestBody FindByEmailDTO dto){
         Customer customer = service.findByEmail(dto.email());
-        return ResponseEntity.ok(new ResponseBody<>(
-                HttpStatus.OK.value(),
-                customer
-        ));
+        return ResponseEntity.ok(customer);
     }
 
     @GetMapping

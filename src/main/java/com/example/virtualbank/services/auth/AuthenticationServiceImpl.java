@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -40,7 +39,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthResponseDTO signup(AuthRequestSignUpDTO dto) {
 
         repository.findByEmail(dto.email())
-                .ifPresent(customer -> new EntityAlreadyExistsException("Customer already exists"));
+                .ifPresent(customer -> {
+                    throw new EntityAlreadyExistsException("Customer already exists");
+                });
 
 
         CustomerEntity entity = new CustomerEntity(
@@ -50,10 +51,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 dto.email(),
                 encoder.encode(dto.password()));
 
-        String token = tokenService.generateToken(entity);
         repository.save(entity);
+        String token = tokenService.generateToken(entity);
 
         return new AuthResponseDTO(
+                entity.getId(),
                 entity.getName(),
                 entity.getBirthdate().toString(),
                 entity.getPhoneNumber(),

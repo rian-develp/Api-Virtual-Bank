@@ -1,6 +1,5 @@
 package com.example.virtualbank.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,16 +31,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-
-                        // Liberação dos endpoints de 'Customer'
-                        .requestMatchers(HttpMethod.GET, "/login/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/signup/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
 
                         // Liberação dos endpoints de Cards
-                        .requestMatchers(HttpMethod.GET, "/info/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/create/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/delete/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/customers/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/create/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/delete/**").authenticated()
                         .anyRequest().authenticated()
                 ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -21,7 +21,7 @@ public class TokenService {
     public String generateToken(CustomerEntity entity){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create().withIssuer("login-customer")
+            String token = JWT.create().withIssuer("virtualbank")
                     .withSubject(entity.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
@@ -35,7 +35,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("login-customer")
+                    .withIssuer("virtualbank")
                     .build()
                     .verify(token)
                     .getSubject();

@@ -37,10 +37,11 @@ public class SecurityFilter extends OncePerRequestFilter {
             Optional<CustomerEntity> customer = customerRepository.findByEmail(login);
             if (customer.isPresent()){
                 var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-                var authentication = new UsernamePasswordAuthenticationToken(customer, null, authorities);
+                var authentication = new UsernamePasswordAuthenticationToken(customer.get(), null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+        filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request){
