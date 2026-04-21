@@ -21,11 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    private final PasswordEncoder encoder;
     private final AuthenticationService service;
 
-    public AuthenticationController(PasswordEncoder encoder, AuthenticationService service) {
-        this.encoder = encoder;
+    public AuthenticationController(AuthenticationService service) {
         this.service = service;
     }
 
