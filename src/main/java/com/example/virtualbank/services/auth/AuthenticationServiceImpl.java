@@ -8,11 +8,9 @@ import com.example.virtualbank.exceptions.EntityAlreadyExistsException;
 import com.example.virtualbank.exceptions.EntityNotFoundException;
 import com.example.virtualbank.repositories.CustomerRepository;
 import com.example.virtualbank.security.TokenService;
+import com.example.virtualbank.util.Utils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -46,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         CustomerEntity entity = new CustomerEntity(
                 dto.name(),
-                toLocalDate(dto.birthdate()),
+                Utils.convertString(dto.birthdate()),
                 dto.phone_number(),
                 dto.email(),
                 encoder.encode(dto.password()));
@@ -62,11 +60,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 entity.getEmail(),
                 token
         );
-    }
-
-
-    private LocalDate toLocalDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(date, formatter);
     }
 }
